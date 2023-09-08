@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>inheritance and prototype</title>
+</head>
+<body style="background-color: black; color: whitesmoke;">
+    <pre>
+        Q1.	Create 2 objects - parent and child. Attach methods to parent and use those methods in child object using parents prototype																									
+
+function Parent(name) {
+  this.name = name;
+}
+Parent.prototype.greet = function () {
+  console.log(`Hello, my name is ${this.name}`);
+};
+
+function Child(name, age) {
+ 
+  Parent.call(this, name);
+  this.age = age;
+}
+Child.prototype = Object.create(Parent.prototype);
+Child.prototype.constructor = Child;
+Child.prototype.introduce = function () {
+  console.log(`I am ${this.name} and I am ${this.age} years old.`);
+}
+const parent = new Parent("John");
+const child = new Child("Alice", 5);
+
+
+parent.greet(); 
+child.greet();  
+child.introduce();
+In this example, we define a Parent constructor function with a
+ greet method attached to its prototype. Then, we create a Child constructor
+  function that inherits from Parent. The Child constructor calls the Parent 
+  constructor using Parent.call(this, name) to set the name property and inherits 
+  the greet method through the prototype chain. We also attach an introduce 
+  method to the Child prototype.
+
+Finally, we create instances of both Parent and Child and call
+ their respective methods to demonstrate the inheritance.
+    </pre><br>
+    <pre>
+        Q2.	Write code to explain prototype chaining																									
+
+        Prototype chaining in JavaScript is the mechanism by which objects inherit properties and methods from their prototype objects. To explain prototype chaining,
+
+
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.sayHello = function () {
+  console.log(`Hello, my name is ${this.name}`);
+};
+
+function Student(name, studentId) {
+  Person.call(this, name);
+  this.studentId = studentId;
+}
+
+Student.prototype = Object.create(Person.prototype);
+Student.prototype.constructor = Student;
+
+Student.prototype.study = function () {
+  console.log(`${this.name} is studying with student ID ${this.studentId}`);
+};
+
+const person = new Person("John");
+const student = new Student("Alice", 12345);
+
+person.sayHello();   
+student.sayHello();  
+student.study();     
+
+    </pre><br>
+    <pre>
+        Q3.	Add a method to calculate sum of all elements in Array in array's protype, use that method to calculate sum for multiple arrays																									
+
+      
+Array.prototype.sum = function () {
+  return this.reduce((total, current) => total + current, 0);
+};
+
+const array1 = [1, 2, 3, 4, 5];
+const array2 = [10, 20, 30, 40, 50];
+const array3 = [5, 10, 15, 20];
+
+const sum1 = array1.sum(); 
+const sum2 = array2.sum(); 
+const sum3 = array3.sum(); 
+
+console.log(`Sum of array1 elements: ${sum1}`);
+console.log(`Sum of array2 elements: ${sum2}`);
+console.log(`Sum of array3 elements: ${sum3}`);
+
+We add a sum method to the Array prototype. This method uses the reduce function to iterate through the array and calculate the sum of its elements.
+
+We create three arrays: array1, array2, and array3.
+
+We use the sum method on each of these arrays to calculate the sum of their elements and store the results in sum1, sum2, and sum3.
+
+Finally, we log the sums to the console.
+    </pre><br>
+    <pre>
+        Q4.	Write a JavaScript function to retrieve all the names of object's own and inherited properties.																									
+
+        function getAllPropertyNames(obj) {
+            const properties = [];
+          
+            let currentObj = obj;
+            while (currentObj) {
+              properties.push(...Object.getOwnPropertyNames(currentObj));
+              currentObj = Object.getPrototypeOf(currentObj);
+            }
+          
+            return Array.from(new Set(properties));
+          }
+          
+          const person = {
+            name: "John",
+            age: 30,
+          };
+          
+          const student = Object.create(person);
+          student.studentId = 12345;
+          
+          const allPropertyNames = getAllPropertyNames(student);
+          console.log(allPropertyNames);
+          
+
+
+        The getAllPropertyNames function takes an object obj as an argument.
+
+Inside the function, we initialize an empty array properties to store the property names.
+
+We use a while loop to iterate through the object and its prototype chain. 
+In each iteration, we use Object.getOwnPropertyNames to get the property names of the current 
+object and push them into the properties array.
+
+We then move up the prototype chain by setting currentObj to the prototype
+ of the current object using Object.getPrototypeOf.
+
+We continue this process until we reach the end of the prototype chain 
+(i.e., when currentObj becomes null).
+
+Finally, we remove duplicates from the properties array by converting 
+it to a Set and then back to an array
+
+
+
+
+
+
+
+    </pre>
+    
+</body>
+</html>
